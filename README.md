@@ -1,5 +1,9 @@
 # 🦁 Guaraná
 
+<img width="471" height="836" alt="image" src="https://github.com/user-attachments/assets/3ca29e63-4981-403f-bbde-67e9e2496949" />
+
+
+
 Guaraná é um Mico-leão-dourado digital que vive no seu PC e troca sua procrastinação por XP.
 
 ---
@@ -15,15 +19,11 @@ Inspirado na nostalgia dos anos 90 e na fauna brasileira, o Guaraná gamifica su
 
 * ⚡ Sistema de Energia: trabalhar demais sem pausas o deixa exausto
 
-* 🎮 RPG: ganhe XP codando para desbloquear itens e skins
-
 * ✨ Funcionalidades
 
 * 🔁 Ciclo de Vida: o Guaraná sente fome, sono e tédio
 
-* 🧠 Modo Foco (Work): ativa um timer estilo Pomodoro; o Guaraná veste seu capuz de dev e acompanha seu código
-
-* 🛒 Loja de Itens: use o XP ganho trabalhando para comprar bananas, jacas e café virtual
+* 🧠 Modo Foco (Work): ativa um timer estilo Pomodoro; o Guaraná põe seu óclinhos de dev e acompanha seu código
 
 * 💾 Save Automático: progresso salvo localmente — não deixe ele morrer!
 
