@@ -40,7 +40,7 @@ Pré-requisitos
 
 Ter o Python
  instalado
-
+```bash
 # 1. Clone este repositório
 git clone https://github.com/lucybaia/guarana.git
 
@@ -49,7 +49,7 @@ cd guarana
 
 # 3. Execute o mico!
 python src/main.py
-
+```
 🎮 Como Jogar
 1️⃣ Inicie o App
 
