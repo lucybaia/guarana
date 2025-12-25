@@ -18,15 +18,11 @@ Inspirado na nostalgia dos anos 90 e na fauna brasileira, o Guaraná gamifica su
 
 * ⚡ Sistema de Energia: trabalhar demais sem pausas o deixa exausto
 
-* 🎮 RPG: ganhe XP codando para desbloquear itens e skins
-
 * ✨ Funcionalidades
 
 * 🔁 Ciclo de Vida: o Guaraná sente fome, sono e tédio
 
-* 🧠 Modo Foco (Work): ativa um timer estilo Pomodoro; o Guaraná veste seu capuz de dev e acompanha seu código
-
-* 🛒 Loja de Itens: use o XP ganho trabalhando para comprar bananas, jacas e café virtual
+* 🧠 Modo Foco (Work): ativa um timer estilo Pomodoro; o Guaraná põe seu óclinhos de dev e acompanha seu código
 
 * 💾 Save Automático: progresso salvo localmente — não deixe ele morrer!
 
