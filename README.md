@@ -1,5 +1,8 @@
 # 🦁 Guaraná
 
+<img width="395" height="627" alt="image" src="https://github.com/user-attachments/assets/f8da1a4d-3bb0-420a-941e-33001f464dcd" />
+
+
 Guaraná é um Mico-leão-dourado digital que vive no seu PC e troca sua procrastinação por XP.
 
 ---
