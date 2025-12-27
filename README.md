@@ -1,6 +1,7 @@
 # 🦁 Guaraná
 
-<img width="471" height="836" alt="image" src="https://github.com/user-attachments/assets/3ca29e63-4981-403f-bbde-67e9e2496949" />
+<img width="471" height="836" alt="image" src="https://github.com/user-attachments/assets/3ca29e63-4981-403f-bbde-67e9e2496949" /> <img width="571" height="936" alt="image" src="https://github.com/user-attachments/assets/ecc47a74-c7ec-49c9-93a2-10b8db6ff9bc" />
+
 
 
 
