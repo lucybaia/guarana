@@ -12,16 +12,17 @@ class GuaranaPet:
     def __init__(self, root):
         self.root = root
         self.root.title("Guaraná - O Mico Dev")
-        self.root.geometry("460x750")
+        # Tamanho reduzido proporcionalmente
+        self.root.geometry("340x580")
         self.root.resizable(False, False)
 
         # --- Configurações de Jogo ---
-        self.POMODORO_TIME = 25 * 60  # 25 minutos
-        self.SLEEP_TIME = 15 * 60     # 15 minutos
+        self.POMODORO_TIME = 25 * 60  
+        self.SLEEP_TIME = 15 * 60     
         
         self.tempo_restante = 0
-        self.timer_mode = None        # 'focus' ou 'sleep'
-        self.jogo_iniciado = False    # Trava: só começa a sentir fome depois do primeiro foco
+        self.timer_mode = None        
+        self.jogo_iniciado = False    
         self.vigor_inicial_sessao = 100
         
         # Estados Iniciais do Pet
@@ -31,11 +32,11 @@ class GuaranaPet:
         self.em_aventura = False
         self.dormindo = False
         
-        # Variáveis de Imagem (para evitar Garbage Collection)
+        # Variáveis de Imagem
         self.current_display_image = None
         self.status_display_image = None
 
-        # --- Paleta de Cores (Tema Selva) ---
+        # --- Paleta de Cores ---
         self.colors = {
             "bg":       "#F4F6D8",
             "frame":    "#E3D08C",
@@ -53,7 +54,7 @@ class GuaranaPet:
         # 2. Montar Interface
         self._configurar_ui()
 
-        # 3. Iniciar Loop de Vida (ficará em espera até jogo_iniciado = True)
+        # 3. Iniciar Loop de Vida
         self.atualizar_ciclo_vida()
 
     def _carregar_fontes(self):
@@ -61,7 +62,7 @@ class GuaranaPet:
         assets_folder = os.path.join(base_folder, 'assets')
         font_path = os.path.join(assets_folder, "Jost-VariableFont_wght.ttf")
         
-        self.custom_font = "Jost" # Fallback
+        self.custom_font = "Verdana" # Fallback
         if os.path.exists(font_path):
             try:
                 ctk.FontManager.load_font(font_path)
@@ -76,7 +77,7 @@ class GuaranaPet:
                 print(f"Erro ao carregar fonte: {e}")
 
     def _carregar_assets(self):
-        """Carrega imagens usando PIL para manipulação avançada"""
+        """Carrega e redimensiona imagens para o novo tamanho menor"""
         base_folder = os.path.dirname(__file__)
         self.assets_folder = os.path.join(base_folder, 'assets')
         self.images_loaded = True
@@ -92,23 +93,27 @@ class GuaranaPet:
                 print(f"Erro ao carregar {filename}: {e}")
                 return None
 
-        # Sprites do Mico
-        self.pil_mico_idle = load_pil("mico_idle.png", (220, 220))
-        self.pil_mico_work = load_pil("mico_work.png", (220, 220))
-        self.pil_mico_sleep = load_pil("mico_sleep.png", (220, 220))
-        self.pil_mico_tired = load_pil("mico_tired.png", (220, 220))
-        self.pil_mico_hungry = load_pil("mico_hungry.png", (220, 220))
+        # Sprites do Mico (Reduzidos de 220 para 150)
+        sprite_size = (150, 150)
+        self.pil_mico_idle = load_pil("mico_idle.png", sprite_size)
+        self.pil_mico_work = load_pil("mico_work.png", sprite_size)
+        self.pil_mico_sleep = load_pil("mico_sleep.png", sprite_size)
+        self.pil_mico_tired = load_pil("mico_tired.png", sprite_size)
+        self.pil_mico_hungry = load_pil("mico_hungry.png", sprite_size)
 
-        # Fundos
-        self.pil_bg = load_pil("fundo.jpg", (420, 300))
+        # Fundo Principal (Reduzido de 420x300 para 300x200)
+        self.pil_bg = load_pil("fundo.jpg", (300, 200))
+        
+        # Fundo Status (Reduzido de 380x120 para 300x90)
         self.pil_status_bg = load_pil("fundobarra.png")
         if self.pil_status_bg:
-            self.pil_status_bg = self.pil_status_bg.resize((380, 120), Image.LANCZOS)
+            self.pil_status_bg = self.pil_status_bg.resize((300, 90), Image.LANCZOS)
 
-        # Botões (Carrega PIL e converte para CTkImage)
+        # Botões (Reduzidos de 110x50 para 80x35)
+        btn_size = (80, 35)
         def load_ctk_btn(filename):
-            pil = load_pil(filename, (110, 50))
-            return ctk.CTkImage(light_image=pil, size=(110, 50)) if pil else None
+            pil = load_pil(filename, btn_size)
+            return ctk.CTkImage(light_image=pil, size=btn_size) if pil else None
 
         self.btn_img_focar    = load_ctk_btn("foia_focar.png")
         self.btn_img_focar_h  = load_ctk_btn("foia_focar_h.png")
@@ -122,36 +127,36 @@ class GuaranaPet:
             print("AVISO: Assets essenciais não encontrados.")
 
     def _configurar_ui(self):
-        # Título
-        self.lbl_title = ctk.CTkLabel(self.root, text="Guaraná 🦁", 
-                                      font=(self.custom_font, 36, "bold"),
+        # Título (Fonte reduzida de 36 para 24)
+        self.lbl_title = ctk.CTkLabel(self.root, text="Guaraná", 
+                                      font=(self.custom_font, 24, "bold"),
                                       text_color=self.colors["text"])
         self.lbl_title.pack(pady=(10, 2))
 
-        # Área do Pet (Frame transparente)
-        self.pet_area = ctk.CTkFrame(self.root, fg_color="transparent", width=420, height=300)
+        # Área do Pet (Reduzida)
+        self.pet_area = ctk.CTkFrame(self.root, fg_color="transparent", width=300, height=200)
         self.pet_area.pack(pady=4)
         
         self.pet_display = ctk.CTkLabel(self.pet_area, text="")
         self.pet_display.place(relx=0.5, rely=0.5, anchor="center")
         
-        self.atualizar_visual_mico() # Estado inicial
+        self.atualizar_visual_mico()
 
-        # Texto de Status
+        # Texto de Status (Fonte reduzida de 21 para 14)
         self.lbl_status_text = ctk.CTkLabel(self.root, text="O mico está observando...", 
-                                            font=("Rost", 21), 
+                                            font=("Rost", 14), 
                                             text_color=self.colors["text"])
         self.lbl_status_text.pack(pady=2)
 
-        # Timer
+        # Timer (Fonte reduzida de 28 para 22)
         self.lbl_timer = ctk.CTkLabel(self.root, text="", 
-                                      font=(self.custom_font, 28, "bold"), 
+                                      font=(self.custom_font, 22, "bold"), 
                                       text_color=self.colors["timer"])
         self.lbl_timer.pack(pady=2)
 
-        # Frame de Status (Barras)
+        # Frame de Status
         self.status_frame = ctk.CTkFrame(self.root, fg_color="transparent")
-        self.status_frame.pack(pady=6, padx=20, fill="x")
+        self.status_frame.pack(pady=4, padx=10, fill="x")
         
         self.status_display = ctk.CTkLabel(self.status_frame, text="")
         self.status_display.pack()
@@ -159,23 +164,22 @@ class GuaranaPet:
 
         # Botões
         self.btn_frame = ctk.CTkFrame(self.root, fg_color="transparent")
-        self.btn_frame.pack(pady=8)
+        self.btn_frame.pack(pady=5)
 
         self._criar_botao(0, self.btn_img_focar, self.btn_img_focar_h, self.explorar_codigo)
         self._criar_botao(1, self.btn_img_comer, self.btn_img_comer_h, self.dar_banana)
         self._criar_botao(2, self.btn_img_zzz, self.btn_img_zzz_h, self.descansar_na_rede)
 
     def _criar_botao(self, col, img_normal, img_hover, comando):
+        # Tamanho do botão no widget ajustado para 80x35
         btn = ctk.CTkButton(self.btn_frame, text="", command=comando,
                             image=img_normal, fg_color="transparent", hover_color=None,
-                            width=110, height=50)
-        btn.grid(row=0, column=col, padx=5)
+                            width=80, height=35)
+        btn.grid(row=0, column=col, padx=4)
         
-        # Bindings para efeito hover
         btn.bind("<Enter>", lambda e: self._on_hover(btn, img_hover))
         btn.bind("<Leave>", lambda e: self._on_leave(btn, img_normal))
         
-        # Salva referências para alternar estado depois
         if comando == self.explorar_codigo: self.btn_work = btn
         elif comando == self.dar_banana: self.btn_feed = btn
         elif comando == self.descansar_na_rede: self.btn_sleep = btn
@@ -191,7 +195,7 @@ class GuaranaPet:
     # --- LÓGICA DE COMPOSIÇÃO DE IMAGEM ---
 
     def compositar_mico_com_fundo(self, pil_mico):
-        """Cola o mico em cima do fundo.jpg"""
+        """Cola o mico em cima do fundo reduzido"""
         if not self.pil_bg or not pil_mico:
             return None
         try:
@@ -199,44 +203,49 @@ class GuaranaPet:
             x = (composited.width - pil_mico.width) // 2
             y = (composited.height - pil_mico.height) // 2
             composited.paste(pil_mico, (x, y), pil_mico)
-            return ctk.CTkImage(light_image=composited, size=(420, 300))
+            # Retorna CTkImage no tamanho novo (300x200)
+            return ctk.CTkImage(light_image=composited, size=(300, 200))
         except Exception as e:
             print(f"Erro composição: {e}")
             return None
 
     def compositar_status_barras(self):
-        """Desenha barras de progresso e texto sobre o png de status"""
+        """Desenha barras compactas e sem emojis"""
         if not self.pil_status_bg:
             return None
         try:
             img = self.pil_status_bg.copy()
             draw = ImageDraw.Draw(img)
             
-            padding_left = 20
-            y_vigor = 20
-            y_fome = 40
-            bar_x = padding_left + 100
-            bar_w = 200
-            bar_h = 10
-            text_color = (59, 40, 32, 255) # #3B2820
+            # Coordenadas ajustadas para o tamanho 300x90
+            padding_left = 15
+            y_vigor = 12
+            y_fome = 38
+            
+            # Barra começa um pouco depois do texto
+            bar_x = padding_left + 65 
+            bar_w = 140 # Barra menor
+            bar_h = 8   # Barra mais fina
+            
+            text_color = (59, 40, 32, 255)
             
             def draw_stat(y, label, val, color):
-                # Texto
+                # Texto (sem emojis)
                 draw.text((padding_left, y), f"{label} {val}%", fill=text_color)
                 # Contorno
-                draw.rectangle([bar_x, y+5, bar_x + bar_w, y+5 + bar_h], outline=text_color, width=1)
+                draw.rectangle([bar_x, y+4, bar_x + bar_w, y+4 + bar_h], outline=text_color, width=1)
                 # Preenchimento
                 fill_w = int(bar_w * (val / 100))
                 if fill_w > 0:
-                    draw.rectangle([bar_x, y+5, bar_x + fill_w, y+5 + bar_h], fill=color)
+                    draw.rectangle([bar_x, y+4, bar_x + fill_w, y+4 + bar_h], fill=color)
 
-            draw_stat(y_vigor, "⚡ Vigor", self.vigor, (76, 175, 80, 255))  # Verde
-            draw_stat(y_fome, "🍌 Fome", self.fome, (255, 152, 0, 255))   # Laranja
+            draw_stat(y_vigor, "Vigor", self.vigor, (76, 175, 80, 255)) 
+            draw_stat(y_fome, "Fome", self.fome, (255, 152, 0, 255))   
             
-            # Texto Frutas (canto direito ou abaixo)
-            draw.text((padding_left + 100, y_fome + 20), f"🥥 Frutas: {self.frutas}", fill=(200, 80, 0, 255))
+            # Frutas
+            draw.text((padding_left + 65, y_fome + 20), f"Frutas: {self.frutas}", fill=(200, 80, 0, 255))
 
-            return ctk.CTkImage(light_image=img, size=(380, 120))
+            return ctk.CTkImage(light_image=img, size=(300, 90))
         except Exception as e:
             print(f"Erro barras: {e}")
             return None
@@ -245,7 +254,6 @@ class GuaranaPet:
 
     def atualizar_visual_mico(self):
         if not self.images_loaded:
-            self.pet_display.configure(text="🐒")
             return
 
         pil_target = self.pil_mico_idle
@@ -280,7 +288,6 @@ class GuaranaPet:
     # --- LÓGICA DO JOGO E TIMER ---
 
     def atualizar_ciclo_vida(self):
-        """Loop passivo: só roda se o jogo foi iniciado"""
         if not self.jogo_iniciado:
             return
 
@@ -288,41 +295,38 @@ class GuaranaPet:
             self.vigor = max(0, self.vigor - 1)
             self.fome = min(100, self.fome + 2)
             
+            # Textos sem emojis
             if self.fome >= 90:
-                self.lbl_status_text.configure(text="FOME EXTREMA!!! 🍌💢")
+                self.lbl_status_text.configure(text="FOME EXTREMA!!!")
             elif self.fome > 70:
-                self.lbl_status_text.configure(text="Tô com fome... 😕")
+                self.lbl_status_text.configure(text="Estou com fome...")
             elif self.vigor < 30:
-                self.lbl_status_text.configure(text="Cansado demais... 😴")
+                self.lbl_status_text.configure(text="Muito cansado...")
             else:
-                self.lbl_status_text.configure(text="Só observando...")
+                self.lbl_status_text.configure(text="Observando...")
 
             self.refresh_ui()
 
         if self.fome >= 100:
-            messagebox.showerror("Game Over", "Guaraná fugiu para procurar comida na floresta!")
+            messagebox.showerror("Game Over", "Guaraná fugiu para procurar comida!")
             self.root.destroy()
         else:
             self.root.after(3000, self.atualizar_ciclo_vida)
 
     def contagem_regressiva(self):
-        """Loop ativo (Timer)"""
         if self.tempo_restante > 0:
             mins, secs = divmod(self.tempo_restante, 60)
             self.lbl_timer.configure(text=f"{mins:02d}:{secs:02d}")
             
-            # --- Lógica Proporcional ---
             if self.timer_mode == "focus":
-                # Vigor desce de 'vigor_inicial' até 0%
                 fator = self.tempo_restante / self.POMODORO_TIME
                 self.vigor = int(self.vigor_inicial_sessao * fator)
                 
                 if self.tempo_restante <= 5 * 60:
-                    self.lbl_status_text.configure(text="Quase lá... (Cansando)")
+                    self.lbl_status_text.configure(text="Quase la...")
                     self.atualizar_visual_mico()
 
             elif self.timer_mode == "sleep":
-                # Vigor sobe de 'vigor_inicial' até 100%
                 tempo_decorrido = self.SLEEP_TIME - self.tempo_restante
                 pct_concluida = tempo_decorrido / self.SLEEP_TIME
                 ganho_necessario = 100 - self.vigor_inicial_sessao
@@ -346,7 +350,7 @@ class GuaranaPet:
             
         elif self.timer_mode == "sleep":
             self.vigor = 100
-            self.lbl_status_text.configure(text="Energia renovada! (100%)")
+            self.lbl_status_text.configure(text="Energia renovada!")
             self.dormindo = False
 
         self.timer_mode = None
@@ -363,20 +367,19 @@ class GuaranaPet:
 
     def explorar_codigo(self):
         if self.vigor <= 0:
-             messagebox.showwarning("Exausto", "O mico está desmaiado de sono! Coloque ele na rede.")
+             messagebox.showwarning("Exausto", "O mico esta desmaiado de sono!")
              return
 
-        # Inicia a "vida" do jogo se for a primeira vez
         if not self.jogo_iniciado:
             self.jogo_iniciado = True
             self.atualizar_ciclo_vida()
 
         self.em_aventura = True
         self.timer_mode = "focus"
-        self.vigor_inicial_sessao = self.vigor # Salva para cálculo
+        self.vigor_inicial_sessao = self.vigor
         self.alternar_botoes("disabled")
         
-        self.lbl_status_text.configure(text="Focando! Shhh...")
+        self.lbl_status_text.configure(text="Focando...")
         self.tempo_restante = self.POMODORO_TIME
         self.atualizar_visual_mico()
         self.contagem_regressiva()
@@ -386,7 +389,7 @@ class GuaranaPet:
         if self.frutas >= custo:
             self.fome = max(0, self.fome - 20)
             self.frutas -= custo
-            self.lbl_status_text.configure(text="Nhac! Delícia. 😋")
+            self.lbl_status_text.configure(text="Nhac! Delicia.")
             self.refresh_ui()
             self.root.after(1500, lambda: self.lbl_status_text.configure(text="Feliz!"))
         else:
@@ -395,10 +398,10 @@ class GuaranaPet:
     def descansar_na_rede(self):
         self.dormindo = True
         self.timer_mode = "sleep"
-        self.vigor_inicial_sessao = self.vigor # Salva para cálculo
+        self.vigor_inicial_sessao = self.vigor 
         self.alternar_botoes("disabled")
         
-        self.lbl_status_text.configure(text="Zzz... Recuperando Vigor")
+        self.lbl_status_text.configure(text="Recuperando Vigor...")
         self.tempo_restante = self.SLEEP_TIME
         self.atualizar_visual_mico()
         self.contagem_regressiva()
